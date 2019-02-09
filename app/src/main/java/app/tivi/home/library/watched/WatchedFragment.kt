@@ -44,6 +44,18 @@ class WatchedFragment : TiviMvRxFragment() {
         ListItemSharedElementHelper(binding.watchedRv) { it.findViewById(R.id.show_poster) }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        controller.callbacks = object : WatchedEpoxyController.Callbacks {
+            override fun onItemClicked(item: WatchedShowEntryWithShow) {
+                viewModel.onItemPostedClicked(homeNavigator, item.show,
+                        listItemSharedElementHelper.createForItem(item, "poster")
+                )
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentLibraryWatchedBinding.inflate(inflater, container, false)
         binding.setLifecycleOwner(viewLifecycleOwner)
@@ -53,14 +65,6 @@ class WatchedFragment : TiviMvRxFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
-
-        controller.callbacks = object : WatchedEpoxyController.Callbacks {
-            override fun onItemClicked(item: WatchedShowEntryWithShow) {
-                viewModel.onItemPostedClicked(homeNavigator, item.show,
-                        listItemSharedElementHelper.createForItem(item, "poster")
-                )
-            }
-        }
 
         binding.watchedRv.apply {
             addItemDecoration(SpacingItemDecorator(paddingLeft))

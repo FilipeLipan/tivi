@@ -54,7 +54,7 @@ class EpoxyModelProperty<T>(default: () -> T) : ReadWriteProperty<EpoxyControlle
     override fun setValue(thisRef: EpoxyController, property: KProperty<*>, value: T) {
         if (this.value != value) {
             this.value = value
-            thisRef.requestModelBuild()
+            thisRef.
         }
     }
 }

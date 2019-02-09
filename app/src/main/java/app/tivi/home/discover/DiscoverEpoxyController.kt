@@ -25,12 +25,13 @@ import app.tivi.data.resultentities.TrendingEntryWithShow
 import app.tivi.emptyState
 import app.tivi.header
 import app.tivi.posterGridItem
+import app.tivi.ui.epoxy.EpoxyModelProperty
 import app.tivi.ui.epoxy.TotalSpanOverride
 import com.airbnb.epoxy.TypedEpoxyController
 import javax.inject.Inject
 
 class DiscoverEpoxyController @Inject constructor() : TypedEpoxyController<DiscoverViewState>() {
-    var callbacks: Callbacks? = null
+    var callbacks by EpoxyModelProperty<Callbacks?> { null }
 
     interface Callbacks {
         fun onTrendingHeaderClicked(items: List<TrendingEntryWithShow>)

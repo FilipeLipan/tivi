@@ -36,6 +36,7 @@ import app.tivi.detailsSeasonEpisode
 import app.tivi.detailsSummary
 import app.tivi.inject.PerActivity
 import app.tivi.tmdb.TmdbImageUrlProvider
+import app.tivi.ui.epoxy.EpoxyModelProperty
 import app.tivi.ui.epoxy.TotalSpanOverride
 import app.tivi.ui.epoxy.carousel
 import app.tivi.ui.epoxy.withModelsFrom
@@ -50,8 +51,7 @@ class ShowDetailsEpoxyController @Inject constructor(
     @PerActivity private val context: Context,
     private val textCreator: ShowDetailsTextCreator
 ) : TypedEpoxyController<ShowDetailsViewState>() {
-
-    var callbacks: Callbacks? = null
+    var callbacks by EpoxyModelProperty<Callbacks?> { null }
 
     interface Callbacks {
         fun onRelatedShowClicked(show: TiviShow, view: View)

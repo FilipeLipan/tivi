@@ -44,6 +44,18 @@ class FollowedFragment : TiviMvRxFragment() {
 
     @Inject lateinit var controller: FollowedEpoxyController
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        controller.callbacks = object : FollowedEpoxyController.Callbacks {
+            override fun onItemClicked(item: FollowedShowEntryWithShow) {
+                viewModel.onItemPostedClicked(homeNavigator, item.show,
+                        listItemSharedElementHelper.createForItem(item, "poster")
+                )
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentLibraryFollowedBinding.inflate(inflater, container, false)
         binding.setLifecycleOwner(viewLifecycleOwner)
@@ -56,14 +68,6 @@ class FollowedFragment : TiviMvRxFragment() {
 
         binding.followedRv.apply {
             addItemDecoration(SpacingItemDecorator(paddingLeft))
-        }
-
-        controller.callbacks = object : FollowedEpoxyController.Callbacks {
-            override fun onItemClicked(item: FollowedShowEntryWithShow) {
-                viewModel.onItemPostedClicked(homeNavigator, item.show,
-                        listItemSharedElementHelper.createForItem(item, "poster")
-                )
-            }
         }
 
         binding.followedRv.apply {

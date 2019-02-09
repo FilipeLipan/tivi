@@ -47,16 +47,18 @@ class LibraryFragment : TiviMvRxFragment() {
     private val viewModel: LibraryViewModel by fragmentViewModel()
     @Inject lateinit var libraryViewModelFactory: LibraryViewModel.Factory
 
-    private val filterController = LibraryFiltersEpoxyController(object : LibraryFiltersEpoxyController.Callbacks {
-        override fun onFilterSelected(filter: LibraryFilter) {
-            closeFilterPanel()
-            viewModel.onFilterSelected(filter)
-        }
-    })
+    @Inject lateinit var filterController: LibraryFiltersEpoxyController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GridToGridTransitioner.setupFirstFragment(this, R.id.summary_appbarlayout, R.id.summary_status_scrim)
+
+        filterController.callbacks = object : LibraryFiltersEpoxyController.Callbacks {
+            override fun onFilterSelected(filter: LibraryFilter) {
+                closeFilterPanel()
+                viewModel.onFilterSelected(filter)
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

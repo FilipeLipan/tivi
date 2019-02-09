@@ -16,8 +16,6 @@
 
 package app.tivi.home.library.watched
 
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import app.tivi.LibraryWatchedItemBindingModel_
 import app.tivi.data.resultentities.WatchedShowEntryWithShow
@@ -34,13 +32,10 @@ import javax.inject.Inject
 class WatchedEpoxyController @Inject constructor(
     private val textCreator: LibraryTextCreator,
     private val dateFormatter: TiviDateFormatter
-) : PagedListEpoxyController<WatchedShowEntryWithShow>(
-        modelBuildingHandler = Handler(Looper.getMainLooper())
-) {
+) : PagedListEpoxyController<WatchedShowEntryWithShow>() {
     var tmdbImageUrlProvider by EpoxyModelProperty { TmdbImageUrlProvider() }
     var isEmpty by EpoxyModelProperty { false }
-
-    var callbacks: Callbacks? = null
+    var callbacks by EpoxyModelProperty<Callbacks?> { null }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
         if (isEmpty) {

@@ -18,9 +18,13 @@ package app.tivi.home.library
 
 import android.view.View
 import app.tivi.libraryFilterItem
+import app.tivi.ui.epoxy.EpoxyModelProperty
 import com.airbnb.epoxy.TypedEpoxyController
+import javax.inject.Inject
 
-class LibraryFiltersEpoxyController(private val callbacks: Callbacks) : TypedEpoxyController<LibraryViewState>() {
+class LibraryFiltersEpoxyController @Inject constructor() : TypedEpoxyController<LibraryViewState>() {
+    var callbacks by EpoxyModelProperty<Callbacks?> { null }
+
     interface Callbacks {
         fun onFilterSelected(filter: LibraryFilter)
     }
@@ -31,7 +35,7 @@ class LibraryFiltersEpoxyController(private val callbacks: Callbacks) : TypedEpo
                 id("filter_${filter.name}")
                 filter(filter)
                 clickListener(View.OnClickListener {
-                    callbacks.onFilterSelected(filter)
+                    callbacks?.onFilterSelected(filter)
                 })
             }
         }

@@ -16,8 +16,6 @@
 
 package app.tivi.home.library.followed
 
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import app.tivi.LibraryFollowedItemBindingModel_
 import app.tivi.data.resultentities.FollowedShowEntryWithShow
@@ -32,12 +30,10 @@ import javax.inject.Inject
 
 class FollowedEpoxyController @Inject constructor(
     private val textCreator: LibraryTextCreator
-) : PagedListEpoxyController<FollowedShowEntryWithShow>(
-        modelBuildingHandler = Handler(Looper.getMainLooper())
-) {
+) : PagedListEpoxyController<FollowedShowEntryWithShow>() {
     var tmdbImageUrlProvider by EpoxyModelProperty { TmdbImageUrlProvider() }
     var isEmpty by EpoxyModelProperty { false }
-    var callbacks: Callbacks? = null
+    var callbacks by EpoxyModelProperty<Callbacks?> { null }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
         if (isEmpty) {

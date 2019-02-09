@@ -64,6 +64,36 @@ class ShowDetailsFragment : TiviMvRxFragment() {
 
     private lateinit var binding: FragmentShowDetailsBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        controller.callbacks = object : ShowDetailsEpoxyController.Callbacks {
+            override fun onRelatedShowClicked(show: TiviShow, view: View) {
+                viewModel.onRelatedShowClicked(
+                        showDetailsNavigator,
+                        show,
+                        SharedElementHelper().apply {
+                            addSharedElement(view, "poster")
+                        }
+                )
+            }
+
+            override fun onEpisodeClicked(episode: Episode, view: View) {
+                viewModel.onRelatedShowClicked(showDetailsNavigator, episode)
+            }
+
+            override fun onMarkSeasonUnwatched(season: Season) = viewModel.onMarkSeasonUnwatched(season)
+
+            override fun onMarkSeasonWatched(season: Season, onlyAired: Boolean, date: ActionDate) {
+                viewModel.onMarkSeasonWatched(season, onlyAired, date)
+            }
+
+            override fun toggleSeasonExpanded(season: Season) {
+                viewModel.toggleSeasonExpanded(season)
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         binding.setLifecycleOwner(viewLifecycleOwner)
@@ -126,32 +156,6 @@ class ShowDetailsFragment : TiviMvRxFragment() {
 
         binding.detailsToolbar.setNavigationOnClickListener {
             viewModel.onUpClicked(showDetailsNavigator)
-        }
-
-        controller.callbacks = object : ShowDetailsEpoxyController.Callbacks {
-            override fun onRelatedShowClicked(show: TiviShow, view: View) {
-                viewModel.onRelatedShowClicked(
-                        showDetailsNavigator,
-                        show,
-                        SharedElementHelper().apply {
-                            addSharedElement(view, "poster")
-                        }
-                )
-            }
-
-            override fun onEpisodeClicked(episode: Episode, view: View) {
-                viewModel.onRelatedShowClicked(showDetailsNavigator, episode)
-            }
-
-            override fun onMarkSeasonUnwatched(season: Season) = viewModel.onMarkSeasonUnwatched(season)
-
-            override fun onMarkSeasonWatched(season: Season, onlyAired: Boolean, date: ActionDate) {
-                viewModel.onMarkSeasonWatched(season, onlyAired, date)
-            }
-
-            override fun toggleSeasonExpanded(season: Season) {
-                viewModel.toggleSeasonExpanded(season)
-            }
         }
 
         binding.detailsRv.setController(controller)
